@@ -1,0 +1,12 @@
+#map-div {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+#gameplay {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+}
