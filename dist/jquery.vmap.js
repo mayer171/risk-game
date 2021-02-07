@@ -149,9 +149,13 @@ var JQVMap = function (params) {
 
     if (this.canvas.mode === 'svg') {
       path.setAttribute('class', 'jqvmap-region');
+  
+      
     } else {
       jQuery(path).addClass('jqvmap-region');
+
     }
+   
 
     jQuery(this.rootGroup).append(path);
   }
@@ -186,7 +190,7 @@ var JQVMap = function (params) {
       jQuery(params.container).trigger('regionMouseOut.jqvmap', [code, mapData.paths[code].name]);
     }
   });
-
+//EVENT LISTENER SET UP
   jQuery(params.container).delegate(this.canvas.mode === 'svg' ? 'path' : 'shape', 'click', function (regionClickEvent) {
 
     var targetPath = regionClickEvent.target;
