@@ -208,13 +208,22 @@ $(() => {
 	}
 	//Functions to select/deselect state to attack from 
 	const selectorToggle = () => {
-		if (attackState !== null){
+
+		
+		if (($(event.target)).hasClass('selected')){
+			console.log('deselector')
+			deSelector(event)
+		} else if (attackState !== null && targetState === null){
+			
+			console.log('target selector')
 			targetSelector(event)
 		} else {
-			if (($(event.target)).hasClass('selected')){
-				deSelector(event)
+			if (attackState !== null && targetState !== null){
+				console.log('target deselector')
+				targetDeSelector(event)
 			} 
 			else if (mainGameTracker === 'select'){
+				console.log('selector')
 				selector(event)
 				updatePlayerInfo()
 			}
@@ -229,7 +238,7 @@ $(() => {
 					for (neighbor of neighbors){
 						for (territory of territoryObjects){
 							if (neighbor === territory.name && territory.occupier !== t && territory.occupier !== null ){
-							$(`#${neighbor}`).toggleClass('toggle');
+							$(`#${neighbor}`).addClass('toggle');
 							($(event.target)).addClass('selected');
 							targetStatesArr.push(neighbor)		
 							}
@@ -246,45 +255,40 @@ $(() => {
 	}
 	const deSelector = (event) => {
 		let $clicked = ($(event.target)).attr('id');
-		for (territory of territoryObjects){
-			if ($clicked === territory.name){
-				if (territory.occupier === t){
-					let neighbors = territory.neighbors
-					for (neighbor of neighbors){
-						for (territory of territoryObjects){
-							if (neighbor === territory.name && territory.occupier !== t && territory.occupier !== null ){
-							$(`#${neighbor}`).toggleClass('toggle');
-							($(event.target)).removeClass('selected');
-							}
-						} 
-					} 
-				} 
-			} 		
-		}
-		$('#console').text('Select State to Attack From');
-		targetStatesArr = []
-		attackState = null;
-		mainGameTracker = 'select';	
+		if ($clicked === attackState){
+			console.log(targetStatesArr)
+			for (target of targetStatesArr){
+				($(`#${target}`)).removeClass('toggle')
+			}
+			($(event.target)).removeClass('selected');
+			$(`#${targetState}`).removeClass('selected-targ');
+			targetStatesArr = []
+			attackState = null;
+			mainGameTracker = 'select';	
+		}	
 	}
-	
 	const targetSelector = (event) => {
 		let $clicked = ($(event.target)).attr('id');
 		for (territory of targetStatesArr){
 			if ($clicked === territory){
-				console.log(territory);
-				
 				($(event.target)).addClass('selected-targ');
 				targetState = $clicked;
 			} else {
-				$(`#${territory}`).toggleClass('toggle');
-				console.log(`${territory} not clicked`)
-				
-
+				$(`#${territory}`).removeClass('toggle');
 			}
 		}
-
-
 	}
+	const targetDeSelector = (event) => {
+		let $clicked = ($(event.target)).attr('id');
+		if ($clicked === targetState){
+			($(event.target)).removeClass('selected-targ');
+			for (territory of targetStatesArr){
+				$(`#${territory}`).addClass('toggle');
+			}		
+			
+		}targetState = null;
+	}
+
 	//event listeners
 	$('#player1submit').click(makePlayer)
 	$('#player2submit').click(makePlayer)
