@@ -24,10 +24,9 @@ $(() => {
 			if (gameStateTracker === 'start'){	
 				
 			} else if (gameStateTracker === 'setup' && playerArr[1].units > 0){
-				$('#jqvmap1_fl').css('z-index', '-5')
 				setUpBoard(event)
 			} else {
-				attackSelector()	
+				selectorToggle()	
 			}
 		}
 	});
@@ -127,7 +126,7 @@ $(() => {
 	class Player {
 		constructor(name){
 			this.name = name;
-			this.units = 24;
+			this.units = 4;
 			this.occupiedStates = [];
 		}
 	}
@@ -175,6 +174,7 @@ $(() => {
 		}
 	})
 
+	//TODO - ALLOW USER TO PLACE ADDITIONAL UNITS ON STATES THEY OWN
 	//function to control initial board set up
 	const setUpBoard = (event) =>{
 		
@@ -206,15 +206,18 @@ $(() => {
 		updatePlayerInfo()
 		toggleTurn()
 	}
-
 	//Functions to select/deselect state to attack from 
-	const attackSelector = () => {
-		if (($(event.target)).hasClass('selected')){
-			deSelector(event)
-		} 
-		else if (mainGameTracker === 'select'){
-			selector(event)
-			updatePlayerInfo()
+	const selectorToggle = () => {
+		if (attackState !== null){
+			targetSelector(event)
+		} else {
+			if (($(event.target)).hasClass('selected')){
+				deSelector(event)
+			} 
+			else if (mainGameTracker === 'select'){
+				selector(event)
+				updatePlayerInfo()
+			}
 		}
 	}
 	const selector = (event) => {
@@ -228,8 +231,7 @@ $(() => {
 							if (neighbor === territory.name && territory.occupier !== t && territory.occupier !== null ){
 							$(`#${neighbor}`).toggleClass('toggle');
 							($(event.target)).addClass('selected');
-							targetStatesArr.push(neighbor)
-							console.log(targetStatesArr)		
+							targetStatesArr.push(neighbor)		
 							}
 						} 
 					} 
@@ -261,16 +263,29 @@ $(() => {
 		}
 		$('#console').text('Select State to Attack From');
 		targetStatesArr = []
-		console.log(targetStatesArr)
 		attackState = null;
-		console.log(attackState);
 		mainGameTracker = 'select';	
 	}
+	
+	const targetSelector = (event) => {
+		let $clicked = ($(event.target)).attr('id');
+		for (territory of targetStatesArr){
+			if ($clicked === territory){
+				console.log(territory);
+				
+				($(event.target)).addClass('selected-targ');
+				targetState = $clicked;
+			} else {
+				$(`#${territory}`).toggleClass('toggle');
+				console.log(`${territory} not clicked`)
+				
+
+			}
+		}
 
 
-
+	}
 	//event listeners
 	$('#player1submit').click(makePlayer)
 	$('#player2submit').click(makePlayer)
 });
-

@@ -60,5 +60,9 @@ h1 {
 .selected {
     stroke: green;
     stroke-width: .5em;
+}
 
+.selected-targ {
+    stroke: black;
+    stroke-width: 1em;
 }
