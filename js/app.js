@@ -44,27 +44,7 @@ $(() => {
 	let targetStatesArr = [];
 	let targetState = null;
 
-	//function to toggle whose turn it is during gameplay 
-	const toggleTurn = () =>{
-		if (t === 0){
-			t = 1;
-			$(`#player1`).removeClass("active")
-			$(`#player2`).addClass("active")
-		} else {
-			t = 0;
-			$(`#player1`).addClass("active")
-			$(`#player2`).removeClass("active")
-		}		
-	}
-	//function to update player information when needed
-	const updatePlayerInfo = () => {
-		let index = 1;
-		for (player of playerArr){
-			$(`#p${index}u`).text(player.units);
-			$(`#p${index}s`).text(player.occupiedStates.length);
-			index ++
-		}
-	}
+
 	//create Territory class
 	class Territory {
 		constructor(name,neighbors){
@@ -75,7 +55,6 @@ $(() => {
 		}
 	}
 	const stateNeighbors = {
-		ak: ['jqvmap1_wa'],
 		al: ['jqvmap1_tn','jqvmap1_ms','jqvmap1_fl','jqvmap1_ga'],
 		ar: ['jqvmap1_ok','jqvmap1_ms','jqvmap1_la','jqvmap1_tx','jqvmap1_mo','jqvmap1_tn'],
 		az: ['jqvmap1_ut','jqvmap1_co','jqvmap1_nm','jqvmap1_ca','jqvmap1_nv'],
@@ -125,6 +104,19 @@ $(() => {
 		wv: ['jqvmap1_pa','jqvmap1_md','jqvmap1_va','jqvmap1_ky','jqvmap1_oh'],
 		wy: ['jqvmap1_mt','jqvmap1_sd','jqvmap1_ne','jqvmap1_co','jqvmap1_ut','jqvmap1_id'],
 	}
+	//TODO Fix more states 
+	const stateTransforms = {	 
+		ca: ['60', '265'],
+		de: ['840', '250'],
+		fl: ['760', '505'],
+		id: ['200', '150'],
+		la: ['550', '450'],
+		mi: ['650', '170'],
+		mn: ['505', '125'],
+		nh: ['840', '126'],
+		ri: ['878', '185'],
+		vt: ['860', '129'],	
+	}
 	//create player class
 	class Player {
 		constructor(name){
@@ -137,6 +129,28 @@ $(() => {
 	//function makes players when they submitt thier names
 	const playerArr = []
 	playerArr.pop() //WHY!!!!!
+
+	//function to toggle whose turn it is during gameplay 
+	const toggleTurn = () =>{
+		if (t === 0){
+			t = 1;
+			$(`#player1`).removeClass("active")
+			$(`#player2`).addClass("active")
+		} else {
+			t = 0;
+			$(`#player1`).addClass("active")
+			$(`#player2`).removeClass("active")
+		}		
+	}
+	//function to update player information when needed
+	const updatePlayerInfo = () => {
+		let index = 1;
+		for (player of playerArr){
+			$(`#p${index}u`).text(player.units);
+			$(`#p${index}s`).text(player.occupiedStates.length);
+			index ++
+		}
+	}
 	
 	//get player names 
 	let player1 = 'Michael' //window.prompt("Enter Player 1 Name","");
@@ -157,9 +171,40 @@ $(() => {
 	makePlayer(player1)
 	makePlayer(player2)
 
+	const addText = (path, name) => {
+		let text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+		let boarder = path.getBBox();
+		let pathId = path.getAttribute('id')
+		text.setAttribute("transform", "translate(" + (boarder.x + boarder.width/2) + " " + (boarder.y + boarder.height/2) + ")");
+		text.setAttribute('id', `${name}_text`);
+		text.setAttribute('class', 'state-display');
+		text.textContent = 'x';
+		text.setAttribute('fill', 'black')
+		path.parentNode.insertBefore(text,path.nextSibling)
+	}
+	const stateDisplays = document.getElementsByClassName('state-display')
+	
+
 	//create object for each territory and assign neighbor states
 	//Also creates an info div for each territory to display info to the player 
 	let $territoryElements = $('.jqvmap-region')
+	for (territory of $territoryElements){
+		let name = $(territory).attr('id');
+		addText(territory, name)
+	}
+	//document.getElementById('jqvmap1_fl_text').setAttribute("transform", "translate(" + 760 + " " + 505 + ")");
+	//TODO - PUT IN addText Function
+	for (stateDisplay of stateDisplays){
+		let displayState = stateDisplay.getAttribute('id')
+		for (state in stateTransforms){
+			if (displayState.split('_')[1] === state){
+				console.log(state)
+				console.log(displayState)
+				console.log('true')
+				stateDisplay.setAttribute("transform", "translate(" + stateTransforms[state][0] + " " + stateTransforms[state][1] + ")");
+			}
+		}	
+	}
 	let territoryObjects = []
 	$territoryElements.each(function(){
 		let name = $(this).attr('id');
@@ -175,6 +220,14 @@ $(() => {
 			}
 		}
 	})
+
+	const updateBoard = () => {
+		for (territory of territoryObjects){
+			let name = territory.name;
+			console.log(name)
+			$(`#${name}_info`).text(territory.units)
+		}
+	}
 	//function to control initial board set up
 	const setUpBoard = (event) => {
 			let $clicked = ($(event.target)).attr('id');
@@ -205,6 +258,7 @@ $(() => {
 		}
 		updatePlayerInfo()
 		toggleTurn()
+		//updateBoard()
 	}
 	const placeUnits = (event) => {
 		let $clicked = ($(event.target)).attr('id');
@@ -213,7 +267,8 @@ $(() => {
 				territory.units ++;
 				playerArr[t].units --
 				toggleTurn();
-				updatePlayerInfo();	
+				updatePlayerInfo();
+				//updateBoard();	
 			} 
 		}
 		if (playerArr[0].units === 0 && playerArr[1].units === 0){
@@ -221,7 +276,6 @@ $(() => {
 		}
 	}
 	const diceRoll = (numDice) => {
-		console.log(numDice)
 		let diceArr = []
 		for (let i = 0; i < numDice; i++){
 			let roll = Math.floor((Math.random() * 6) + 1);
@@ -319,17 +373,16 @@ $(() => {
 		}	
 		}targetState = null;
 	}
-	const attack = (event) => {
-		let attackeDice = null;
+	const attack = () => {
+		let attackerDice = null;
 		let defenderDice = null;
+		let attackerArr = territoryObjects.filter(territory => territory.name === attackState);
+		let defenderArr = territoryObjects.filter(territory => territory.name === targetState);
+		let attacker = attackerArr[0]
+		let defender = defenderArr[0]  
 		if (attackState === null || targetState === null){
 			return
 		} else {
-			let attackerArr = territoryObjects.filter(territory => territory.name === attackState);
-			let defenderArr = territoryObjects.filter(territory => territory.name === targetState);
-			let attacker = attackerArr[0]
-			let defender = defenderArr[0]  
-
 			console.log(attacker)
 			console.log(defender)
 			if (attacker.units > 2){
@@ -347,6 +400,16 @@ $(() => {
 		let defenderRoll = diceRoll(defenderDice)
 		console.log(attackerRoll)
 		console.log(defenderRoll)
+		for (let i = 0; i < defenderRoll.length; i++){
+			if (attackerRoll[i] > defenderRoll[i]){
+				defender.units --
+			} else {
+				attacker.units --
+			}
+		}
+		console.log(attacker)
+		console.log(defender)
+		//updateBoard()
 	}
 
 	//event listeners

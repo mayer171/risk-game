@@ -25,10 +25,6 @@
     stroke-width: .5em;
 }
 
-h1 {
-    z-index: 7;
-}
-
 .active {
     background-color: green;
 }
@@ -38,9 +34,7 @@ h1 {
     height: 100%;
     position: absolute;
 }
-#state-info-container{
-    z-index: 5;
-}
+
 #vmap {
     z-index: 10;
 }
@@ -48,13 +42,6 @@ h1 {
 .state-info {
     width: 10px;
     height: 10px;
-    z-index: 10;
-}
-
-#jqvmap1_tx_info {
-    position: relative;
-    top: 75%;
-    left: 44%;
 }
 
 .selected {
@@ -66,3 +53,323 @@ h1 {
     stroke: black;
     stroke-width: 1em;
 }
+
+#jqvmap1_al_info {
+    position: absolute;
+    top: 65%;
+    left: 67%;
+    z-index: 12;
+}
+#jqvmap1_az_info {
+    position: absolute;
+    top: 60%;
+    left: 21%;
+    z-index: 12;
+}
+#jqvmap1_ar_info {
+    position: relative;
+    top: 60%;
+    left: 56%;
+    z-index: 12;
+}
+#jqvmap1_ca_info {
+    position: relative;
+    top: 50%;
+    left: 10%;
+    z-index: 12;
+}
+#jqvmap1_co_info {
+    position: relative;
+    top: 45%;
+    left: 33%;
+    z-index: 12;
+}
+#jqvmap1_ct_info {
+    position: relative;
+    top: 75%;
+    left: 44%;
+    z-index: 12;
+}
+#jqvmap1_de_info {
+    position: relative;
+    top: 75%;
+    left: 44%;
+    z-index: 12;
+}
+#jqvmap1_fl_info {
+    position: relative;
+    top: 75%;
+    left: 44%;
+    z-index: 12;
+}
+#jqvmap1_ga_info {
+    position: relative;
+    top: 75%;
+    left: 44%;
+    z-index: 12;
+}
+
+#jqvmap1_id_info {
+    position: relative;
+    top: 75%;
+    left: 44%;
+    z-index: 12;
+}
+#jqvmap1_il_info {
+    position: relative;
+    top: 75%;
+    left: 44%;
+    z-index: 12;
+}
+#jqvmap1_in_info {
+    position: relative;
+    top: 75%;
+    left: 44%;
+    z-index: 12;
+}
+#jqvmap1_ia_info {
+    position: relative;
+    top: 75%;
+    left: 44%;
+    z-index: 12;
+}
+#jqvmap1_ks_info {
+    position: relative;
+    top: 75%;
+    left: 44%;
+    z-index: 12;
+}
+
+#jqvmap1_ky_info {
+    position: relative;
+    top: 75%;
+    left: 44%;
+    z-index: 12;
+}
+
+#jqvmap1_la_info {
+    position: relative;
+    top: 75%;
+    left: 44%;
+    z-index: 12;
+}
+
+#jqvmap1_me_info {
+    position: relative;
+    top: 75%;
+    left: 44%;
+    z-index: 12;
+}
+
+#jqvmap1_md_info {
+    position: relative;
+    top: 75%;
+    left: 44%;
+    z-index: 12;
+}
+
+#jqvmap1_ma_info {
+    position: relative;
+    top: 75%;
+    left: 44%;
+    z-index: 12;
+}
+
+#jqvmap1_mi_info {
+    position: relative;
+    top: 75%;
+    left: 44%;
+    z-index: 12;
+}
+
+#jqvmap1_mn_info {
+    position: relative;
+    top: 75%;
+    left: 44%;
+    z-index: 12;
+}
+#jqvmap1_ms_info {
+    position: relative;
+    top: 75%;
+    left: 44%;
+    z-index: 12;
+}
+
+#jqvmap1_mo_info {
+    position: relative;
+    top: 75%;
+    left: 44%;
+    z-index: 12;
+}
+
+#jqvmap1_mt_info {
+    position: relative;
+    top: 75%;
+    left: 44%;
+    z-index: 12;
+}
+
+#jqvmap1_ne_info {
+    position: relative;
+    top: 75%;
+    left: 44%;
+    z-index: 12;
+}
+
+#jqvmap1_nv_info {
+    position: relative;
+    top: 75%;
+    left: 44%;
+    z-index: 12;
+}
+
+#jqvmap1_nh_info {
+    position: relative;
+    top: 75%;
+    left: 44%;
+    z-index: 12;
+}
+
+#jqvmap1_nj_info {
+    position: relative;
+    top: 75%;
+    left: 44%;
+    z-index: 12;
+}
+
+#jqvmap1_nm_info {
+    position: relative;
+    top: 75%;
+    left: 44%;
+    z-index: 12;
+}
+
+#jqvmap1_ny_info {
+    position: relative;
+    top: 75%;
+    left: 44%;
+    z-index: 12;
+}
+
+#jqvmap1_nc_info {
+    position: relative;
+    top: 75%;
+    left: 44%;
+    z-index: 12;
+}
+
+#jqvmap1_nd_info {
+    position: relative;
+    top: 75%;
+    left: 44%;
+    z-index: 12;
+}
+
+#jqvmap1_oh_info {
+    position: relative;
+    top: 75%;
+    left: 44%;
+    z-index: 12;
+}
+
+#jqvmap1_ok_info {
+    position: relative;
+    top: 75%;
+    left: 44%;
+    z-index: 12;
+}
+
+#jqvmap1_or_info {
+    position: relative;
+    top: 75%;
+    left: 44%;
+    z-index: 12;
+}
+#jqvmap1_pa_info {
+    position: relative;
+    top: 75%;
+    left: 44%;
+    z-index: 12;
+}
+#jqvmap1_ri_info {
+    position: relative;
+    top: 75%;
+    left: 44%;
+    z-index: 12;
+}
+#jqvmap1_sc_info {
+    position: relative;
+    top: 75%;
+    left: 44%;
+    z-index: 12;
+}
+#jqvmap1_sd_info {
+    position: relative;
+    top: 75%;
+    left: 44%;
+    z-index: 12;
+}
+
+#jqvmap1_tn_info {
+    position: relative;
+    top: 75%;
+    left: 44%;
+    z-index: 12;
+}
+
+#jqvmap1_tx_info {
+    position: relative;
+    top: 75%;
+    left: 44%;
+    z-index: 12;
+}
+
+#jqvmap1_ut_info {
+    position: relative;
+    top: 75%;
+    left: 44%;
+    z-index: 12;
+}
+
+#jqvmap1_vt_info {
+    position: relative;
+    top: 75%;
+    left: 44%;
+    z-index: 12;
+}
+
+#jqvmap1_va_info {
+    position: relative;
+    top: 75%;
+    left: 44%;
+    z-index: 12;
+}
+
+#jqvmap1_wa_info {
+    position: relative;
+    top: 75%;
+    left: 44%;
+    z-index: 12;
+}
+
+#jqvmap1_wv_info {
+    position: relative;
+    top: 75%;
+    left: 44%;
+    z-index: 12;
+}
+
+#jqvmap1_wi_info {
+    position: relative;
+    top: 75%;
+    left: 44%;
+    z-index: 12;
+}
+
+#jqvmap1_wy_info {
+    position: relative;
+    top: 75%;
+    left: 44%;
+    z-index: 12;
+}
+

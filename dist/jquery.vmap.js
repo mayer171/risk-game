@@ -115,7 +115,7 @@ var JQVMap = function (params) {
 
       if(mapPins){
         jQuery('.jqvmap-pin').remove();
-        map.pinHandlers = false;
+        map.pinHandlers = true;
         map.placePins(mapPins.pins, mapPins.mode);
       }
     }
