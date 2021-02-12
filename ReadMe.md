@@ -8,10 +8,11 @@
     -attack neighboring states
         attack success is random with weighting for number of troops
     -retreat from attacking 
-    -reinforce neighboring states 
+    -invade successfully attacked states 
     -end turn
-3. Players who successfully attack a neighboring state will draw a card that can be traded in for additional troops once 3 like cards are collected. 
-4. A player wins when they have successfully taken over all of the states. 
+3. Players who successfully attack a neighboring state will be awarded 1 unit per state.
+4. Players will be given a random number of units between 1-3 after their respective turns 
+5. A player wins when they have successfully taken over all of the states. 
 
 ## Resources
 Will use jquery.vmap as map library
