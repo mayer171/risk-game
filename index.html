@@ -13,31 +13,57 @@
   <body>
 	<div id='map-div'>
 		<div id="vmap" style="width: 1000px; height: 600px;"></div>
-		<div id="state-info-container" style="width: 1000px; height: 600px;">
-		</div>
 	</div>
-	<div id='gameplay'>
-		<div id='player1'>
-			<div id='player1box'></div>
-			<div id='player1units'>Units Available
-				<div id='p1u'></div>
+	<div id='game'>
+		<div id='gameplay'>
+			<div id='player1'>
+				<div id='player1box'></div>
+				<div class='player-info' id='player1units'>Units Available
+					<div class='player-data'id='p1u'></div>
+				</div>
+				<div class='player-info' id='player1states'>States Occupied
+					<div class='player-data' id='p1s'></div>
+				</div>
 			</div>
-			<div id='player1states'>States Occupied
-				<div id='p1s'></div>
+		
+			<div id='game-window'>		 
+				<div id='console'></div>
+				<div id='game-buttons'>
+					<button class='game-button' id='attack-button'>ATTACK!</button>
+					<button class='game-button' id='fortify-states'>PLACE UNITS</button>
+					<button class='game-button' id='end-turn'>END TURN</button>
+					<button class='game-button' id='move-units'>INVADE!</button>
+					<button class='game-button' id='clear-selections'>CLEAR SELECTIONS</button>
+				</div>
+				<div id='dice-box'>
+					<div class = 'dice-container' id='attacker-dice'>
+						<div class='dice-text'> Attacker's Dice</div>
+						<div class='dice-space'>
+							<div class='dice'id='ad1'>X</div>
+							<div class='dice'id='ad2'>X</div>
+							<div class='dice'id='ad3'>X</div>
+						</div>
+					</div>
+					<div class = 'dice-container' id='defender-dice'>
+						<div class='dice-text'> Defender's Dice</div>
+						<div class='dice-space'>
+							<div class='dice'id='dd1'>X</div>
+							<div class='dice'id='dd2'>X</div>
+						</div>
+					</div>
+				</div>
 			</div>
-		</div>		 
-		<div id='console'></div>
-		<button id='attack-button'>ATTACK!</button>
+		
+		
 		<div id='player2'>
 			<div id='player2box'></div>
-			<div id='player2units'>Units Available
-				<div id='p2u'></div>
+			<div class='player-info' id='player2units'>Units Available
+				<div class='player-data' id='p2u'></div>
 			</div>
-			<div id='player2states'>States Occupied
-				<div id='p2s'></div>
+			<div class='player-info' id='player2states'>States Occupied
+				<div class='player-data' id='p2s'></div>
 			</div>
-		</div>	
-
+		</div>
 	</div>
   </body>
 </html>

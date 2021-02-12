@@ -21,14 +21,18 @@ $(() => {
 		//state event listener conditional based on gamestatetracker
 		onRegionClick: function(element, code, region)
 		{	
+			console.log(gameStateTracker)
 			if (gameStateTracker === 'start'){	
 				
-			} else if (gameStateTracker === 'setup' && playerArr[1].units > 0){
+			} else if (gameStateTracker === 'setup' && playerArr[t].units > 0){
 				setUpBoard(event)
-			} else if (gameStateTracker === 'place-units' && playerArr[1].units > 0){
+			} else if (gameStateTracker === 'place-units' && playerArr[t].units > 0){
 				placeUnits(event)
+			} else if (gameStateTracker === 'fortify'){
+				fortifyUnits(event)
 			} else {
-				
+				gameStateTracker = 'main'
+				$('#end-turn').show()
 				selectorToggle()	
 			}
 		}
@@ -43,17 +47,16 @@ $(() => {
 	let attackState = null;
 	let targetStatesArr = [];
 	let targetState = null;
+	//Array of territories 
+	let territoryObjects = [];
+	//get player names 
+	let player1 = 'Michael' //window.prompt("Enter Player 1 Name","");
+	let player2 = 'Colleen' //window.prompt("Enter Player 2 Name","");
 
+	//function makes players when they submitt thier names
+	const playerArr = []
+	playerArr.pop() //WHY!!!!!
 
-	//create Territory class
-	class Territory {
-		constructor(name,neighbors){
-			this.name = name;
-			this.occupier = null;
-			this.units = null;
-			this.neighbors = neighbors;
-		}
-	}
 	const stateNeighbors = {
 		al: ['jqvmap1_tn','jqvmap1_ms','jqvmap1_fl','jqvmap1_ga'],
 		ar: ['jqvmap1_ok','jqvmap1_ms','jqvmap1_la','jqvmap1_tx','jqvmap1_mo','jqvmap1_tn'],
@@ -117,20 +120,46 @@ $(() => {
 		ri: ['878', '185'],
 		vt: ['860', '129'],	
 	}
+	//create Territory class
+	class Territory {
+		constructor(name,neighbors){
+			this.name = name;
+			this.occupier = null;
+			this.units = null;
+			this.neighbors = neighbors;
+		}
+	}
 	//create player class
 	class Player {
 		constructor(name){
 			this.name = name;
-			this.units = 7;
+			this.units =10;
 			this.occupiedStates = [];
 		}
 	}
-	
-	//function makes players when they submitt thier names
-	const playerArr = []
-	playerArr.pop() //WHY!!!!!
-
 	//function to toggle whose turn it is during gameplay 
+	const checkWinner = () => {
+		console.log('checking')
+		for (let i = 0; i < playerArr.length; i ++){
+			if (playerArr[i].occupiedStates.length >= Math.floor(territoryObjects.length)){
+				$('#gameplay').remove()
+				console.log('true')
+			}
+		}
+	}
+	const clearSlections = () =>{
+		for (territory of territoryObjects){
+			$(`#${territory.name}`).removeClass('selected');
+			$(`#${territory.name}`).removeClass('toggle');
+			$(`#${territory.name}`).removeClass('selected-targ');	
+		}
+		mainGameTracker = 'select'
+		attackState = null;
+		targetState = null;	
+		$('.dice').text('X')
+		$('#clear-selections').hide()
+		$('#attack-button').hide()
+	}
 	const toggleTurn = () =>{
 		if (t === 0){
 			t = 1;
@@ -140,22 +169,28 @@ $(() => {
 			t = 0;
 			$(`#player1`).addClass("active")
 			$(`#player2`).removeClass("active")
-		}		
+		}
+		if (gameStateTracker === 'main' && playerArr[t].units > 0){
+			$('#fortify-states').show()
+		}
+
+		clearSlections()
+		checkWinner()
 	}
-	//function to update player information when needed
-	const updatePlayerInfo = () => {
-		let index = 1;
+	const updateBoard = () => {
+		//Update Players Info
+		let ind = 1;
 		for (player of playerArr){
-			$(`#p${index}u`).text(player.units);
-			$(`#p${index}s`).text(player.occupiedStates.length);
-			index ++
+			$(`#p${ind}u`).text(player.units);
+			$(`#p${ind}s`).text(player.occupiedStates.length);
+			ind ++
+		}
+		//Update State Info 
+		for (territory of territoryObjects){
+			let name = territory.name;
+			document.getElementById(`${name}_text`).textContent = (territory.units)
 		}
 	}
-	
-	//get player names 
-	let player1 = 'Michael' //window.prompt("Enter Player 1 Name","");
-	let player2 = 'Colleen' //window.prompt("Enter Player 2 Name","");
-	
 	const makePlayer = (name) =>{
 		let player = new Player(name)
 		playerArr.push(player)
@@ -165,68 +200,7 @@ $(() => {
 		}
 		let index = playerArr.length
 		$(`#player${index}box`).text(`${name}'s Army`)
-		updatePlayerInfo()
-		
-	}
-	makePlayer(player1)
-	makePlayer(player2)
-
-	const addText = (path, name) => {
-		let text = document.createElementNS("http://www.w3.org/2000/svg", "text");
-		let boarder = path.getBBox();
-		let pathId = path.getAttribute('id')
-		text.setAttribute("transform", "translate(" + (boarder.x + boarder.width/2) + " " + (boarder.y + boarder.height/2) + ")");
-		text.setAttribute('id', `${name}_text`);
-		text.setAttribute('class', 'state-display');
-		text.textContent = 'x';
-		text.setAttribute('fill', 'black')
-		path.parentNode.insertBefore(text,path.nextSibling)
-	}
-	const stateDisplays = document.getElementsByClassName('state-display')
-	
-
-	//create object for each territory and assign neighbor states
-	//Also creates an info div for each territory to display info to the player 
-	let $territoryElements = $('.jqvmap-region')
-	for (territory of $territoryElements){
-		let name = $(territory).attr('id');
-		addText(territory, name)
-	}
-	//document.getElementById('jqvmap1_fl_text').setAttribute("transform", "translate(" + 760 + " " + 505 + ")");
-	//TODO - PUT IN addText Function
-	for (stateDisplay of stateDisplays){
-		let displayState = stateDisplay.getAttribute('id')
-		for (state in stateTransforms){
-			if (displayState.split('_')[1] === state){
-				console.log(state)
-				console.log(displayState)
-				console.log('true')
-				stateDisplay.setAttribute("transform", "translate(" + stateTransforms[state][0] + " " + stateTransforms[state][1] + ")");
-			}
-		}	
-	}
-	let territoryObjects = []
-	$territoryElements.each(function(){
-		let name = $(this).attr('id');
-		let infoId = `${name}_info`
-		let $infoDiv = $('<div>').attr('id', infoId)
-		$infoDiv.addClass('state_info')
-		$('#state-info-container').append($infoDiv)
-		for (stateId in stateNeighbors){
-			if(name.match(/[^_]*$/)[0] === stateId){
-				neighbors = stateNeighbors[stateId]
-				let territory = new Territory(name, neighbors)
-				territoryObjects.push(territory)
-			}
-		}
-	})
-
-	const updateBoard = () => {
-		for (territory of territoryObjects){
-			let name = territory.name;
-			console.log(name)
-			$(`#${name}_info`).text(territory.units)
-		}
+		updateBoard()
 	}
 	//function to control initial board set up
 	const setUpBoard = (event) => {
@@ -252,13 +226,12 @@ $(() => {
 					gameStateTracker = 'place-units';
 					$('#console').text('Place additional units');
 					toggleTurn();
-					updatePlayerInfo();
+					updateBoard();
 					return
 				}
 		}
-		updatePlayerInfo()
 		toggleTurn()
-		//updateBoard()
+		updateBoard()
 	}
 	const placeUnits = (event) => {
 		let $clicked = ($(event.target)).attr('id');
@@ -267,14 +240,30 @@ $(() => {
 				territory.units ++;
 				playerArr[t].units --
 				toggleTurn();
-				updatePlayerInfo();
-				//updateBoard();	
+				updateBoard();	
 			} 
 		}
-		if (playerArr[0].units === 0 && playerArr[1].units === 0){
-			$('#console').text('Select State to Attack From');
+		if (playerArr[t].units === 0){
+			toggleTurn()
 		}
+		if (playerArr[t].units === 0){
+			$('#console').text('Select State to Attack From')
+			return
+		} 
 	}
+	const fortifyUnits = () => {
+		let $clicked = ($(event.target)).attr('id');
+		for (territory of territoryObjects){
+			if (territory.name === $clicked && territory.occupier === t){
+				territory.units ++;
+				playerArr[t].units --
+			}
+		}
+		if (playerArr[t].units === 0){
+			gameStateTracker = 'main'
+		}
+		updateBoard()
+	}		
 	const diceRoll = (numDice) => {
 		let diceArr = []
 		for (let i = 0; i < numDice; i++){
@@ -291,7 +280,6 @@ $(() => {
 			console.log('deselector')
 			deSelector(event)
 		} else if (attackState !== null && targetState === null){
-			
 			console.log('target selector')
 			targetSelector(event)
 		} else {
@@ -302,15 +290,17 @@ $(() => {
 			else if (mainGameTracker === 'select'){
 				console.log('selector')
 				selector(event)
-				updatePlayerInfo()
+				updateBoard()
 			}
 		}
 	}
 	const selector = (event) => {
 		let $clicked = ($(event.target)).attr('id');
+		console.log($clicked)
 		for (territory of territoryObjects){
 			if ($clicked === territory.name){
-				if (territory.occupier === t){
+				if (territory.occupier === t && territory.units > 1){
+					$('#clear-selections').show()
 					let neighbors = territory.neighbors
 					for (neighbor of neighbors){
 						for (territory of territoryObjects){
@@ -323,12 +313,11 @@ $(() => {
 					} 
 					$('#console').text('Select State to Attack');
 					attackState = $clicked;
-					console.log(attackState);
+					
 					mainGameTracker = null;
 				} 
 			} 		
-		}
-		
+		}	
 	}
 	const deSelector = (event) => {
 		let $clicked = ($(event.target)).attr('id');
@@ -354,6 +343,7 @@ $(() => {
 				if ($clicked === territory){
 					($(event.target)).addClass('selected-targ');
 					targetState = $clicked;
+					$('#attack-button').show()
 				} else {
 					$(`#${territory}`).removeClass('toggle');
 				}	
@@ -373,46 +363,169 @@ $(() => {
 		}	
 		}targetState = null;
 	}
+	const fortify = () => {
+		gameStateTracker = 'fortify'
+		$('#fortify-states').hide()
+		updateBoard()
+	}
+	const turnUnits = () => {
+		let randomUnits = Math.floor((Math.random() * 3) + 1);
+		playerArr[t].units += randomUnits;
+		alert(`You have been awarded ${randomUnits} random unit(s)`)
+		updateBoard()
+
+	}
+	const moveAfterAttack = () => {
+		let attackerArr = territoryObjects.filter(territory => territory.name === attackState);
+		let defenderArr = territoryObjects.filter(territory => territory.name === targetState);
+		let attacker = attackerArr[0]
+		console.log(attacker)
+		let defender = defenderArr[0]
+		console.log(defender)
+		if (attacker.units >= 2) {
+			attacker.units --;
+			defender.units ++;
+			console.log(defender)
+			console.log(attacker)
+			if (attacker.units === 1){
+				$('#move-units').hide()
+				$('#console').text('Select State to Attack From')
+				clearSlections()
+			}
+		}
+		updateBoard()
+		console.log(attacker.units)
+		
+		
+
+	}
 	const attack = () => {
+		$('#fortify-states').hide()
 		let attackerDice = null;
 		let defenderDice = null;
 		let attackerArr = territoryObjects.filter(territory => territory.name === attackState);
 		let defenderArr = territoryObjects.filter(territory => territory.name === targetState);
 		let attacker = attackerArr[0]
-		let defender = defenderArr[0]  
-		if (attackState === null || targetState === null){
-			return
-		} else {
-			console.log(attacker)
-			console.log(defender)
-			if (attacker.units > 2){
-				attackerDice = 3;
+		let defender = defenderArr[0] 
+		//logic to set dice count for each player 
+			if (attackState === null || 
+				targetState === null || 
+				attacker.units < 1 ||
+				defender.units < 1){
+				return
 			} else {
-				attackerDice = 2;
+				if (attacker.units > 3){
+					attackerDice = 3;
+				} else if (attacker.units === 3){
+					attackerDice = 2;
+				} else {
+					attackerDice = 1;
+				}
+				if (defender.units >= 2){
+					defenderDice = 2;
+				} else {
+					defenderDice = 1;
+				}		
+			} 
+			//Call random dice rolls and compare 
+			let attackerRoll = diceRoll(attackerDice)
+			let defenderRoll = diceRoll(defenderDice)
+			if (defenderRoll.length > attackerRoll.lenght){
+				attackerRoll.pop()
+			} 
+			$('.dice').text('X')
+			for (let i = 1; i <= attackerRoll.length; i++){
+				console.log(attackerRoll)
+				$(`#ad${i}`).text(attackerRoll[i-1])
 			}
-			if (defender.units >= 2){
-				defenderDice = 2;
-			} else {
-				defenderDice = 1;
-			}		
-		} 
-		let attackerRoll = diceRoll(attackerDice)
-		let defenderRoll = diceRoll(defenderDice)
-		console.log(attackerRoll)
-		console.log(defenderRoll)
-		for (let i = 0; i < defenderRoll.length; i++){
-			if (attackerRoll[i] > defenderRoll[i]){
-				defender.units --
-			} else {
+			
+			for (let i = 1; i <= defenderRoll.length; i++){
+				console.log(defenderRoll)
+				$(`#dd${i}`).text(defenderRoll[i-1])
+			}
+			for (let i = 0; i < defenderRoll.length; i++){
+				if (attackerRoll[i] > defenderRoll[i]){
+					defender.units --
+				} else {
+					attacker.units --
+				}
+			}
+			if (attacker.units === 1){
+				$('#attack-button').hide()
+
+			}
+			//Check for battle win 
+			if (defender.units <= 0 && attacker.units > 1){
+				$(`#${defender.name}`).removeClass(`player${defender.occupier + 1}`)
+				$(`#${defender.name}`).addClass(`player${attacker.occupier + 1}`)
+				playerArr[`${attacker.occupier}`].occupiedStates.push(defender.name)
+				let index = playerArr[`${defender.occupier}`].occupiedStates.indexOf(defender)
+				playerArr[`${defender.occupier}`].occupiedStates.splice(index, 1)
+				defender.occupier = attacker.occupier;
+				defender.units ++
 				attacker.units --
+				playerArr[t].units ++;
+				$('#console').text('Move Units to Defeated State')
+				$('#attack-button').hide()
+				$('#move-units').show()
+				updateBoard()
+				alert(`Battle Won! You have been awarded 1 unit!`)
 			}
+			updateBoard()
+	}
+	//CREATES TERRITORY OBJECTS FOR GAME PLAY AND ADDS TEXT ELEMENTS TO THE MAP
+	const addText = (path, name) => {
+		let text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+		let boarder = path.getBBox();
+		let pathId = path.getAttribute('id')
+		text.setAttribute("transform", "translate(" + (boarder.x + boarder.width/2) + " " + (boarder.y + boarder.height/2) + ")");
+		for (state in stateTransforms){
+			if (pathId.split('_')[1] === state){
+				text.setAttribute("transform", "translate(" + stateTransforms[state][0] + " " + stateTransforms[state][1] + ")");
+			} 
 		}
-		console.log(attacker)
-		console.log(defender)
-		//updateBoard()
+		text.setAttribute('id', `${name}_text`);
+		text.setAttribute('class', 'state-display');
+		text.textContent = '';
+		text.setAttribute('fill', 'black')
+		text.style.fontSize = '20px'
+		
+		path.parentNode.insertBefore(text,path.nextSibling)
+	}
+	const createBoard = () =>{let $territoryElements = $('.jqvmap-region')
+		for (territory of $territoryElements){
+			let name = $(territory).attr('id');
+			addText(territory, name)
+		}
+
+		$territoryElements.each(function(){
+			let name = $(this).attr('id');
+			//addText(`${$(this)}`, name)
+			for (stateId in stateNeighbors){
+				if(name.split('_')[1] === stateId){
+					neighbors = stateNeighbors[stateId]
+					let territory = new Territory(name, neighbors)
+					territoryObjects.push(territory)
+				}
+			}
+		})
+		$('#clear-selections').hide()
+		$('#move-units').hide()
+		$('#attack-button').hide()
+		$('#fortify-states').hide()
+		$('#end-turn').hide()
 	}
 
+	makePlayer(player1)
+	makePlayer(player2)
+	createBoard()
+
 	//event listeners
+	$('#clear-selections').click(clearSlections)
+	$('#move-units').click(moveAfterAttack)
+	$('#fortify-states').click(fortify)
+	$('#end-turn').click(turnUnits)
+	$('#end-turn').click(toggleTurn)
 	$('#attack-button').click(attack)
 	$('#player1submit').click(makePlayer)
 	$('#player2submit').click(makePlayer)

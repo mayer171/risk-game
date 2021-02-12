@@ -1,42 +1,147 @@
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-image: url(XqRBXyO-old-map-background.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
 #map-div {
     display: flex;
     flex-direction: row;
     justify-content: center;
-    
+}
+#game {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+}
+#vmap {
+    border-style:double;
 }
 
 #gameplay {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-
+    justify-content: space-around;
+    align-items: center;
+    height: 300px;
+    width: 1000px;
+    border-style:double;
+    margin-top: 10px;
 }
-
-.player1 {
-    fill: blue;
+#player1, #player2 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-style: inset;
+    height: 290px;
+    width: 175px;
     
 }
 
-.player2 {
-    fill: red;
+#player1box, #player2box{
+    font-size: 25px;
 }
+
+#game-window {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    border-style: solid;
+    border-color: black;
+    
+    height: 290px;
+    width: 600px;
+}
+#console {
+    display: flex;
+    justify-content: center;
+    font-size: 30px;
+}
+#dice-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    
+}
+#game-buttons {
+    display:flex;
+    justify-content: space-around;
+    text-align: center;
+
+}
+
+.player-info{
+    text-align: center;
+}
+
+.player-data{
+    
+
+}
+.game-button {
+    height: 40px;
+    width: 100px;
+}
+.dice-space {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    height: 70px;
+    width: 300px;
+}
+
+.dice-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    padding: 5px;
+
+}
+.dice-text {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
+    height: 70px;
+    width: 300px;
+    
+
+}
+.dice {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-style: solid;
+    border-color: black;
+    background-color: whitesmoke;
+    font-size: 30px;
+    margin: 3px;
+    height: 60px;
+    width: 60px;
+
+}
+.player1 {
+    fill: rgb(35, 35, 185);
+    fill-opacity: .6;
+}
+
+.player2 {
+    fill:olive;
+    fill-opacity: .9;
+}
+
 .toggle {
-    stroke: black;
-    stroke-width: .5em;
+    stroke:rgb(68, 253, 68);
+    stroke-width: .4em;
+    stroke-dasharray: 2%;
+    stroke-opacity: 1;
 }
 
 .active {
-    background-color: green;
-}
-
-#vmap, #state-info-container{
-    width: 100%;
-    height: 100%;
-    position: absolute;
-}
-
-#vmap {
-    z-index: 10;
+    background: rgba(0, 128, 0, 0.3);
 }
 
 .state-info {
@@ -45,331 +150,14 @@
 }
 
 .selected {
-    stroke: green;
-    stroke-width: .5em;
+    stroke:black;
+    stroke-width: .6em;
+    stroke-opacity: .7;
 }
 
 .selected-targ {
-    stroke: black;
-    stroke-width: 1em;
-}
-
-#jqvmap1_al_info {
-    position: absolute;
-    top: 65%;
-    left: 67%;
-    z-index: 12;
-}
-#jqvmap1_az_info {
-    position: absolute;
-    top: 60%;
-    left: 21%;
-    z-index: 12;
-}
-#jqvmap1_ar_info {
-    position: relative;
-    top: 60%;
-    left: 56%;
-    z-index: 12;
-}
-#jqvmap1_ca_info {
-    position: relative;
-    top: 50%;
-    left: 10%;
-    z-index: 12;
-}
-#jqvmap1_co_info {
-    position: relative;
-    top: 45%;
-    left: 33%;
-    z-index: 12;
-}
-#jqvmap1_ct_info {
-    position: relative;
-    top: 75%;
-    left: 44%;
-    z-index: 12;
-}
-#jqvmap1_de_info {
-    position: relative;
-    top: 75%;
-    left: 44%;
-    z-index: 12;
-}
-#jqvmap1_fl_info {
-    position: relative;
-    top: 75%;
-    left: 44%;
-    z-index: 12;
-}
-#jqvmap1_ga_info {
-    position: relative;
-    top: 75%;
-    left: 44%;
-    z-index: 12;
-}
-
-#jqvmap1_id_info {
-    position: relative;
-    top: 75%;
-    left: 44%;
-    z-index: 12;
-}
-#jqvmap1_il_info {
-    position: relative;
-    top: 75%;
-    left: 44%;
-    z-index: 12;
-}
-#jqvmap1_in_info {
-    position: relative;
-    top: 75%;
-    left: 44%;
-    z-index: 12;
-}
-#jqvmap1_ia_info {
-    position: relative;
-    top: 75%;
-    left: 44%;
-    z-index: 12;
-}
-#jqvmap1_ks_info {
-    position: relative;
-    top: 75%;
-    left: 44%;
-    z-index: 12;
-}
-
-#jqvmap1_ky_info {
-    position: relative;
-    top: 75%;
-    left: 44%;
-    z-index: 12;
-}
-
-#jqvmap1_la_info {
-    position: relative;
-    top: 75%;
-    left: 44%;
-    z-index: 12;
-}
-
-#jqvmap1_me_info {
-    position: relative;
-    top: 75%;
-    left: 44%;
-    z-index: 12;
-}
-
-#jqvmap1_md_info {
-    position: relative;
-    top: 75%;
-    left: 44%;
-    z-index: 12;
-}
-
-#jqvmap1_ma_info {
-    position: relative;
-    top: 75%;
-    left: 44%;
-    z-index: 12;
-}
-
-#jqvmap1_mi_info {
-    position: relative;
-    top: 75%;
-    left: 44%;
-    z-index: 12;
-}
-
-#jqvmap1_mn_info {
-    position: relative;
-    top: 75%;
-    left: 44%;
-    z-index: 12;
-}
-#jqvmap1_ms_info {
-    position: relative;
-    top: 75%;
-    left: 44%;
-    z-index: 12;
-}
-
-#jqvmap1_mo_info {
-    position: relative;
-    top: 75%;
-    left: 44%;
-    z-index: 12;
-}
-
-#jqvmap1_mt_info {
-    position: relative;
-    top: 75%;
-    left: 44%;
-    z-index: 12;
-}
-
-#jqvmap1_ne_info {
-    position: relative;
-    top: 75%;
-    left: 44%;
-    z-index: 12;
-}
-
-#jqvmap1_nv_info {
-    position: relative;
-    top: 75%;
-    left: 44%;
-    z-index: 12;
-}
-
-#jqvmap1_nh_info {
-    position: relative;
-    top: 75%;
-    left: 44%;
-    z-index: 12;
-}
-
-#jqvmap1_nj_info {
-    position: relative;
-    top: 75%;
-    left: 44%;
-    z-index: 12;
-}
-
-#jqvmap1_nm_info {
-    position: relative;
-    top: 75%;
-    left: 44%;
-    z-index: 12;
-}
-
-#jqvmap1_ny_info {
-    position: relative;
-    top: 75%;
-    left: 44%;
-    z-index: 12;
-}
-
-#jqvmap1_nc_info {
-    position: relative;
-    top: 75%;
-    left: 44%;
-    z-index: 12;
-}
-
-#jqvmap1_nd_info {
-    position: relative;
-    top: 75%;
-    left: 44%;
-    z-index: 12;
-}
-
-#jqvmap1_oh_info {
-    position: relative;
-    top: 75%;
-    left: 44%;
-    z-index: 12;
-}
-
-#jqvmap1_ok_info {
-    position: relative;
-    top: 75%;
-    left: 44%;
-    z-index: 12;
-}
-
-#jqvmap1_or_info {
-    position: relative;
-    top: 75%;
-    left: 44%;
-    z-index: 12;
-}
-#jqvmap1_pa_info {
-    position: relative;
-    top: 75%;
-    left: 44%;
-    z-index: 12;
-}
-#jqvmap1_ri_info {
-    position: relative;
-    top: 75%;
-    left: 44%;
-    z-index: 12;
-}
-#jqvmap1_sc_info {
-    position: relative;
-    top: 75%;
-    left: 44%;
-    z-index: 12;
-}
-#jqvmap1_sd_info {
-    position: relative;
-    top: 75%;
-    left: 44%;
-    z-index: 12;
-}
-
-#jqvmap1_tn_info {
-    position: relative;
-    top: 75%;
-    left: 44%;
-    z-index: 12;
-}
-
-#jqvmap1_tx_info {
-    position: relative;
-    top: 75%;
-    left: 44%;
-    z-index: 12;
-}
-
-#jqvmap1_ut_info {
-    position: relative;
-    top: 75%;
-    left: 44%;
-    z-index: 12;
-}
-
-#jqvmap1_vt_info {
-    position: relative;
-    top: 75%;
-    left: 44%;
-    z-index: 12;
-}
-
-#jqvmap1_va_info {
-    position: relative;
-    top: 75%;
-    left: 44%;
-    z-index: 12;
-}
-
-#jqvmap1_wa_info {
-    position: relative;
-    top: 75%;
-    left: 44%;
-    z-index: 12;
-}
-
-#jqvmap1_wv_info {
-    position: relative;
-    top: 75%;
-    left: 44%;
-    z-index: 12;
-}
-
-#jqvmap1_wi_info {
-    position: relative;
-    top: 75%;
-    left: 44%;
-    z-index: 12;
-}
-
-#jqvmap1_wy_info {
-    position: relative;
-    top: 75%;
-    left: 44%;
-    z-index: 12;
+    stroke: red;
+    stroke-width: .4em;
+    stroke-opacity: 1;
 }
 
