@@ -133,7 +133,7 @@ $(() => {
 	class Player {
 		constructor(name){
 			this.name = name;
-			this.units = 30;
+			this.units = 20;
 			this.occupiedStates = [];
 		}
 	}
